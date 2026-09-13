@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Form Field Detector</title>
+    <style>
+      :root {
+        --color-bg: #ffffff;
+        --color-surface: #f5f6f8;
+        --color-border: #e0e3e8;
+        --color-text: #16181d;
+        --color-text-muted: #676d78;
+        --color-primary: #2554e8;
+        --color-primary-hover: #1c40b8;
+        --color-success: #15803d;
+        --color-success-bg: #eafbf0;
+        --color-error: #b91c1c;
+        --color-error-bg: #fdecec;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 280px;
+        margin: 0;
+        padding: 16px;
+        font-family: var(--font-sans);
+        background: var(--color-bg);
+        color: var(--color-text);
+      }
+
+      h1 {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--color-text-muted);
+        margin: 0 0 12px;
+      }
+
+      button.primary {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 14px;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+        background: var(--color-primary);
+        border: none;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+
+      button.primary:hover:not(:disabled) {
+        background: var(--color-primary-hover);
+      }
+
+      button.primary:disabled {
+        background: var(--color-border);
+        color: var(--color-text-muted);
+        cursor: not-allowed;
+      }
+
+      button.primary svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+
+      #status {
+        margin-top: 12px;
+        min-height: 18px;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.4;
+        padding: 8px 10px;
+        border-radius: var(--radius-sm);
+        color: var(--color-text-muted);
+      }
+
+      #status.status-processing {
+        color: var(--color-primary);
+        background: #eaf0fe;
+      }
+
+      #status.status-success {
+        color: var(--color-success);
+        background: var(--color-success-bg);
+      }
+
+      #status.status-error {
+        color: var(--color-error);
+        background: var(--color-error-bg);
+      }
+
+      .footer {
+        margin-top: 14px;
+        text-align: right;
+      }
+
+      .footer a {
+        font-size: 11px;
+        color: var(--color-text-muted);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        color: var(--color-primary);
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Voice Fill</h1>
+    <button id="record-button" class="primary">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z"></path>
+        <path d="M19 11a7 7 0 0 1-14 0"></path>
+        <line x1="12" y1="18" x2="12" y2="22"></line>
+        <line x1="8" y1="22" x2="16" y2="22"></line>
+      </svg>
+      <span>Record</span>
+    </button>
+    <div id="status"></div>
+    <div class="footer"><a href="#" id="options-link">Settings</a></div>
+    <script src="popup.js"></script>
+  </body>
+</html>
