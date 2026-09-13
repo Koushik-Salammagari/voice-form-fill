@@ -3,7 +3,7 @@
   "name": "Form Field Detector",
   "version": "0.1.0",
   "description": "Detects fillable form fields on the current page and logs them to the console.",
-  "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": ["storage"],
   "host_permissions": ["https://dictation.assemblyai.com/*"],
   "background": {
     "service_worker": "background.js"

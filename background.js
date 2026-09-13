@@ -7,39 +7,23 @@
     if (!message || typeof message.type !== "string") return;
 
     if (message.type === "TRANSCRIBE_AND_FILL") {
-      const recorderTabId = sender && sender.tab && sender.tab.id;
-      handleTranscribeAndFill(message.wavBase64, message.targetTabId)
-        .then((result) => {
-          sendResponse(result);
-          notifyRecorderDone(recorderTabId, result);
-        })
-        .catch((err) => {
-          const errorResult = { ok: false, error: err.message };
-          sendResponse(errorResult);
-          notifyRecorderDone(recorderTabId, errorResult);
-        });
+      const tabId = sender && sender.tab && sender.tab.id;
+      handleTranscribeAndFill(message.wavBase64, tabId)
+        .then(sendResponse)
+        .catch((err) => sendResponse({ ok: false, error: err.message }));
       return true; // async response
     }
   });
 
-  function notifyRecorderDone(recorderTabId, result) {
-    if (!recorderTabId) return;
-    chrome.tabs
-      .sendMessage(recorderTabId, { type: "FLOW_DONE", result })
-      .catch(() => {
-        // Recorder tab may already be closed - nothing to do.
-      });
-  }
-
-  async function handleTranscribeAndFill(wavBase64, targetTabId) {
+  async function handleTranscribeAndFill(wavBase64, tabId) {
     if (!wavBase64) {
       throw new Error("No recorded audio was provided");
     }
-    if (!targetTabId) {
-      throw new Error("No target tab id was provided");
+    if (!tabId) {
+      throw new Error("Could not determine which tab to fill");
     }
 
-    const schemaResponse = await chrome.tabs.sendMessage(targetTabId, {
+    const schemaResponse = await chrome.tabs.sendMessage(tabId, {
       type: "GET_SCHEMA",
     });
     const fields = (schemaResponse && schemaResponse.fields) || [];
@@ -60,7 +44,7 @@
 
     const values = await transcribeAndExtract(wavBase64, llmInstruction, apiKey);
 
-    const fillResponse = await chrome.tabs.sendMessage(targetTabId, {
+    const fillResponse = await chrome.tabs.sendMessage(tabId, {
       type: "FILL_FIELDS",
       values,
     });
